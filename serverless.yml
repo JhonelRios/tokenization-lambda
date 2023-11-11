@@ -1,0 +1,20 @@
+service: tokenization
+frameworkVersion: '3'
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  api:
+    handler: src/functions/tokenize.handler
+    events:
+      - httpApi:
+          path: /tokenize
+          method: POST
+
+plugins:
+  - serverless-offline
+  - serverless-esbuild

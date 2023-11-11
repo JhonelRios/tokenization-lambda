@@ -17,6 +17,8 @@
     "serverless-offline": "^13.2.1"
   },
   "dependencies": {
-    "redis": "^4.6.10"
+    "crypto": "^1.0.1",
+    "redis": "^4.6.10",
+    "zod": "^3.22.4"
   }
 }

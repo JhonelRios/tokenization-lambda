@@ -11,7 +11,7 @@ provider:
 
 functions:
   api:
-    handler: src/functions/tokenize.handler
+    handler: src/handlers/tokenizeHandler.handler
     events:
       - httpApi:
           path: /tokenize

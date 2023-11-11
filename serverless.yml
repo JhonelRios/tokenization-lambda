@@ -6,6 +6,8 @@ useDotenv: true
 provider:
   name: aws
   runtime: nodejs18.x
+  environment:
+    REDIS_PASSWORD: ${env:REDIS_PASSWORD}
 
 functions:
   api:

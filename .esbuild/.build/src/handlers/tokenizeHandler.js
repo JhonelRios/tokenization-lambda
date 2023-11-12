@@ -21370,11 +21370,50 @@ var CardSchema = z.object({
   })
 });
 
+// src/schemas/CommercePkSchema.ts
+var CommercePkSchema = z.string().startsWith("pk", { message: "Commerce key invalid format" });
+
+// src/utils/constants.ts
+var PK_TEST = "pk_test_LsRBKejzCOEEWOsw";
+
+// src/utils/validateAuthorization.ts
+function validateAuthorization(headers) {
+  const authHeader = headers["authorization"];
+  const token = authHeader?.split(" ")[1];
+  if (!token)
+    throw new Error("Unauthorized");
+  try {
+    CommercePkSchema.parse(token);
+  } catch (error) {
+    throw new Error(JSON.stringify(error.errors));
+  }
+  if (token !== PK_TEST)
+    throw new Error("Wrong token");
+}
+
+// src/factory/ResponseFactory.ts
+function responseFactory(type, body) {
+  const parsedBody = JSON.stringify(body);
+  if (type === 200 /* Ok */)
+    return { statusCode: 200 /* Ok */, body: parsedBody };
+  if (type === 201 /* Created */)
+    return { statusCode: 201 /* Created */, body: parsedBody };
+  if (type === 400 /* BadRequest */)
+    return { statusCode: 400 /* BadRequest */, body: parsedBody };
+  if (type === 401 /* Unauthorized */)
+    return { statusCode: 401 /* Unauthorized */, body: parsedBody };
+  return { statusCode: 500 /* InternalServerError */, body: "Server error" };
+}
+
 // src/functions/tokenizeFunction.ts
 async function tokenizeFunction(event) {
-  console.log({ body: event.body, headers: event.headers });
+  try {
+    validateAuthorization(event.headers);
+  } catch (error) {
+    return responseFactory(401 /* Unauthorized */, { error: error.message });
+  }
   if (!event.body)
-    return { statusCode: 400, body: "No card data" };
+    return responseFactory(400 /* BadRequest */, { message: "No card data" });
   try {
     const cardData = JSON.parse(event.body);
     CardSchema.parse(cardData);
@@ -21383,11 +21422,11 @@ async function tokenizeFunction(event) {
     try {
       redisRepository.set(token, event.body, { minutesToExpire: 15 });
     } catch (redisError) {
-      return { statusCode: 500, body: "Server error" };
+      return responseFactory(500 /* InternalServerError */, { message: "Server Error" });
     }
-    return { statusCode: 200, body: JSON.stringify({ token }) };
+    return responseFactory(201 /* Created */, { token });
   } catch (error) {
-    return { statusCode: 400, body: JSON.stringify(error.errors) };
+    return responseFactory(400 /* BadRequest */, { error: error.errors });
   }
 }
 

@@ -3,13 +3,20 @@ import crypto from 'crypto';
 
 import { RedisRepository } from '../repository/RedisRepository';
 import { CardSchema } from '../schemas/CardSchema';
+import { validateAuthorization } from '../utils/validateAuthorization';
+import { responseFactory } from '../factory/ResponseFactory';
+import { ResponseType } from '../types/responses';
 
 export async function tokenizeFunction(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
-  console.log({ body: event.body, headers: event.headers });
+  try {
+    validateAuthorization(event.headers);
+  } catch (error) {
+    return responseFactory(ResponseType.Unauthorized, { error: error.message });
+  }
 
-  if (!event.body) return { statusCode: 400, body: 'No card data' };
+  if (!event.body) return responseFactory(ResponseType.BadRequest, { message: 'No card data' });
 
   try {
     const cardData = JSON.parse(event.body);
@@ -23,11 +30,11 @@ export async function tokenizeFunction(
     try {
       redisRepository.set(token, event.body, { minutesToExpire: 15 });
     } catch (redisError) {
-      return { statusCode: 500, body: 'Server error' };
+      return responseFactory(ResponseType.InternalServerError, { message: 'Server Error' });
     }
 
-    return { statusCode: 200, body: JSON.stringify({ token }) };
+    return responseFactory(ResponseType.Created, { token });
   } catch (error) {
-    return { statusCode: 400, body: JSON.stringify(error.errors) };
+    return responseFactory(ResponseType.BadRequest, { error: error.errors });
   }
 }

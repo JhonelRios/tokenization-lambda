@@ -58,6 +58,7 @@ export class TokenService {
 
       return responseFactory(ResponseType.Created, { token });
     } catch (error) {
+      console.log(error);
       return responseFactory(ResponseType.BadRequest, { error: error.errors });
     }
   }

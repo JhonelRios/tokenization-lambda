@@ -17568,12 +17568,12 @@ var require_dist7 = __commonJS({
   }
 });
 
-// src/handlers/tokenizeHandler.ts
-var tokenizeHandler_exports = {};
-__export(tokenizeHandler_exports, {
+// src/handlers/getTokenHandler.ts
+var getTokenHandler_exports = {};
+__export(getTokenHandler_exports, {
   handler: () => handler
 });
-module.exports = __toCommonJS(tokenizeHandler_exports);
+module.exports = __toCommonJS(getTokenHandler_exports);
 
 // src/services/TokenService.ts
 var import_crypto = __toESM(require("crypto"));
@@ -21453,9 +21453,9 @@ var TokenService = class {
   }
 };
 
-// src/handlers/tokenizeHandler.ts
+// src/handlers/getTokenHandler.ts
 var handler = async (event) => {
-  return new TokenService().tokenize(event);
+  return new TokenService().getCardDetailsByToken(event);
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

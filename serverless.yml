@@ -10,12 +10,18 @@ provider:
     REDIS_PASSWORD: ${env:REDIS_PASSWORD}
 
 functions:
-  api:
+  tokenize:
     handler: src/handlers/tokenizeHandler.handler
     events:
       - httpApi:
           path: /tokenize
-          method: POST
+          method: post
+  token:
+    handler: src/handlers/getTokenHandler.handler
+    events:
+      - httpApi:
+          path: /token/{token}
+          method: get
 
 plugins:
   - serverless-offline

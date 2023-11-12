@@ -14,6 +14,8 @@ export function responseFactory(
     return { statusCode: ResponseType.BadRequest, body: parsedBody };
   if (type === ResponseType.Unauthorized)
     return { statusCode: ResponseType.Unauthorized, body: parsedBody };
+  if (type === ResponseType.NotFound)
+    return { statusCode: ResponseType.NotFound, body: parsedBody };
 
   return { statusCode: ResponseType.InternalServerError, body: 'Server error' };
 }

@@ -4,7 +4,8 @@
   "description": "Culqui interview",
   "main": "index.js",
   "scripts": {
-    "dev": "serverless offline"
+    "dev": "serverless offline",
+    "deploy": "serverless deploy"
   },
   "keywords": [],
   "author": "",

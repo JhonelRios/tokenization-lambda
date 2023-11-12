@@ -8,7 +8,7 @@ To execute the function in your local:
 
 1. To install the dependencies
     ```
-    $ npm run dev
+    $ npm install
     ```
 
 2. To execute the code

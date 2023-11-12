@@ -48,12 +48,16 @@ describe('TokenService', () => {
     expect(response.body).toContain('token');
   });
 
-  it('should return card details for a valid token', async () => {
+  it('should return card details without cvv for a valid token', async () => {
     const mockToken = '0e60caab6fde7ec9';
     mockEvent.pathParameters = { token: mockToken };
     const response = await tokenService.getCardDetailsByToken(mockEvent);
 
     expect(response).toHaveProperty('statusCode', 200);
-    expect(response.body).toContain('card');
+
+    const responseBody = JSON.parse(response.body);
+
+    expect(responseBody).toHaveProperty('card');
+    expect(responseBody.card).not.toHaveProperty('cvv');
   });
 });

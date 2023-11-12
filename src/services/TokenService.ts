@@ -80,7 +80,10 @@ export class TokenService {
       if (!cardDetails)
         return responseFactory(ResponseType.NotFound, { message: 'Card not found' });
 
-      return responseFactory(ResponseType.Ok, { card: JSON.parse(cardDetails) });
+      const parsedCard = JSON.parse(cardDetails);
+      delete parsedCard.cvv;
+
+      return responseFactory(ResponseType.Ok, { card: parsedCard });
     } catch (error) {
       return responseFactory(ResponseType.InternalServerError, { error });
     }

@@ -41,7 +41,7 @@ export class TokenService {
       return responseFactory(ResponseType.Unauthorized, { error: error.message });
     }
 
-    if (!event.body) return responseFactory(ResponseType.BadRequest, { message: 'No card data' });
+    if (!event.body) return responseFactory(ResponseType.BadRequest, { error: 'No card data' });
 
     try {
       const cardData = JSON.parse(event.body);
@@ -53,7 +53,7 @@ export class TokenService {
       try {
         await this.redisRepository.set(token, event.body, { minutesToExpire: 15 });
       } catch (redisError) {
-        return responseFactory(ResponseType.InternalServerError, { message: 'Server Error' });
+        return responseFactory(ResponseType.InternalServerError, { error: 'Server Error' });
       }
 
       return responseFactory(ResponseType.Created, { token });
@@ -72,13 +72,12 @@ export class TokenService {
 
     const token = event.pathParameters?.token;
 
-    if (!token) return responseFactory(ResponseType.BadRequest, { message: 'No token provided' });
+    if (!token) return responseFactory(ResponseType.BadRequest, { error: 'No token provided' });
 
     try {
       const cardDetails = await this.redisRepository.get(token);
 
-      if (!cardDetails)
-        return responseFactory(ResponseType.NotFound, { message: 'Card not found' });
+      if (!cardDetails) return responseFactory(ResponseType.NotFound, { error: 'Card not found' });
 
       const parsedCard = JSON.parse(cardDetails);
       delete parsedCard.cvv;

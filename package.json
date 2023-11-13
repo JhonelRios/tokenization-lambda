@@ -1,7 +1,7 @@
 {
   "name": "tokenization",
   "version": "1.0.0",
-  "description": "Culqui interview",
+  "description": "Culqi interview",
   "main": "index.js",
   "scripts": {
     "dev": "serverless offline",

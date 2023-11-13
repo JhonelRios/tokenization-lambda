@@ -1,4 +1,4 @@
-# Culqui Fullstack Interview
+# Culqi Fullstack Interview
 
 ## Usage
 

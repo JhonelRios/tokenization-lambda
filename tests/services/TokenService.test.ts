@@ -24,7 +24,7 @@ jest.mock('../../src/repository/RedisRepository', () => {
 
 jest.mock('crypto', () => {
   return {
-    randomBytes: jest.fn(() => Buffer.from('culquiInterview', 'utf-8')),
+    randomBytes: jest.fn(() => Buffer.from('culqiInterview', 'utf-8')),
   };
 });
 

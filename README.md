@@ -1,6 +1,8 @@
-# Culqi Fullstack Interview
+# Credit Card Tokenization
 
-Deployed servie: https://42dbdbjs5h.execute-api.us-east-1.amazonaws.com 
+> Currently the deployed services are unavailable 
+
+Deployed service: https://42dbdbjs5h.execute-api.us-east-1.amazonaws.com 
 
 Endpoints:
   - Generate token: https://42dbdbjs5h.execute-api.us-east-1.amazonaws.com/tokenize
